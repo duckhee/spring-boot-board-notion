@@ -35,6 +35,10 @@ public interface BoardService {
         return null;
     }
 
-    /** Delete Board */
-    
+    /**
+     * Delete Board
+     */
+    default BoardResponseDto.Delete deleteBoard(Long boardIdx) {
+        return null;
+    }
 }

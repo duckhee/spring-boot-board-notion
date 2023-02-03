@@ -44,4 +44,10 @@ public class BoardResponseDto {
             return new Update(board.getIdx());
         }
     }
+
+    public record Delete(Long boardIdx){
+        public static Delete ofDomain(BoardDomain board){
+            return new Delete(board.getIdx());
+        }
+    }
 }

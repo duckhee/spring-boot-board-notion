@@ -7,7 +7,6 @@ import kr.co.won.simpleboard.board.exception.BoardErrorCode;
 import kr.co.won.simpleboard.board.exception.BoardException;
 import kr.co.won.simpleboard.board.persistence.BoardPersistence;
 import kr.co.won.simpleboard.utils.PageDto;
-import kr.co.won.simpleboard.utils.PageMaker;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -62,5 +61,14 @@ public class BoardServiceImpl implements BoardService {
         }
 
         return BoardResponseDto.Update.ofDomain(findBoard);
+    }
+
+    @Transactional
+    @Override
+    public BoardResponseDto.Delete deleteBoard(Long boardIdx) {
+        BoardDomain findBoard = boardPersistence.findByIdx(boardIdx).orElseThrow(() ->
+                new BoardException(BoardErrorCode.BOARD_NOT_FOUND));
+        boardPersistence.delete(findBoard);
+        return BoardResponseDto.Delete.ofDomain(findBoard);
     }
 }
