@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: springBoard
+  profiles:
+    active:
+      - local
