@@ -2,6 +2,8 @@ package kr.co.won.simpleboard.board.controller;
 
 import kr.co.won.simpleboard.board.dto.BoardForm;
 import kr.co.won.simpleboard.board.dto.BoardResponseDto;
+import kr.co.won.simpleboard.board.exception.BoardErrorCode;
+import kr.co.won.simpleboard.board.exception.BoardException;
 import kr.co.won.simpleboard.board.service.BoardService;
 import kr.co.won.simpleboard.utils.PageDto;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +18,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.util.Objects;
 
 @Slf4j
 @Controller
@@ -87,6 +91,18 @@ public class BoardController {
         BoardResponseDto.Update update = boardService.updateBoard(boardIdx, form);
         flash.addFlashAttribute("msg", update.boardIdx() + " blog update");
         return "redirect:/boards/{boardIdx}";
+    }
+
+    @PostMapping(path = "/{boardIdx}/delete")
+    public String boardDeleteOneDo(@PathVariable(name = "boardIdx") Long boardIdx, RedirectAttributes flash) {
+        BoardResponseDto.Delete delete = boardService.deleteBoard(boardIdx);
+        // TODO check
+        if (Objects.isNull(delete)) {
+            flash.addFlashAttribute("error", boardIdx);
+            throw new BoardException(BoardErrorCode.BOARD_DELETE_FAILED);
+        }
+        flash.addFlashAttribute("msg", "delete success");
+        return "redirect:/boards/list";
     }
 
 }

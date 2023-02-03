@@ -12,6 +12,12 @@ spring:
     console:
       enabled: true
   jpa:
+    properties:
+      hibernate:
+        jpa:
+          batch_size: 50
+        order_inserts: true
+        order_updates: true
     database: H2
     open-in-view: false
     show-sql: true
