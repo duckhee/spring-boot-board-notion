@@ -19,13 +19,13 @@
     <link rel="stylesheet" th:href="@{/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css}"
           href="../../static/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
     <!-- iCheck -->
-    <link rel="stylesheet" th:href="@{plugins/icheck-bootstrap/icheck-bootstrap.min.css}"
+    <link rel="stylesheet" th:href="@{/plugins/icheck-bootstrap/icheck-bootstrap.min.css}"
           href="../../static/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
     <!-- JQVMap -->
     <link rel="stylesheet" th:href="@{/plugins/jqvmap/jqvmap.min.css}"
           href="../../static/plugins/jqvmap/jqvmap.min.css">
     <!-- Theme style -->
-    <link rel="stylesheet" th:href="@{dist/css/adminlte.min.css}" href="../../static/dist/css/adminlte.min.css">
+    <link rel="stylesheet" th:href="@{/dist/css/adminlte.min.css}" href="../../static/dist/css/adminlte.min.css">
     <!-- overlayScrollbars -->
     <link rel="stylesheet" th:href="@{/plugins/overlayScrollbars/css/OverlayScrollbars.min.css}"
           href="../../static/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
@@ -322,5 +322,7 @@
     <script th:src="@{/dist/js/demo.js}" src="../../static/dist/js/demo.js"></script>
     <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
     <script th:src="@{/dist/js/pages/dashboard.js}" src="../../static/dist/js/pages/dashboard.js"></script>
+    <th:block layout:fragment="javascriptBlock"></th:block>
+
 </body>
 </html>
