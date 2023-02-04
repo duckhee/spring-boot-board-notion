@@ -13,13 +13,17 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 import java.util.Objects;
+import java.util.function.LongPredicate;
+import java.util.function.Predicate;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Controller
@@ -102,6 +106,21 @@ public class BoardController {
             throw new BoardException(BoardErrorCode.BOARD_DELETE_FAILED);
         }
         flash.addFlashAttribute("msg", "delete success");
+        return "redirect:/boards/list";
+    }
+
+    // TODO bulk delete do
+    @PostMapping(path = "/bulk-delete")
+    public String boardDeleteBulkDo(@RequestBody List<Long> idxes, RedirectAttributes flash) {
+        List<BoardResponseDto.Delete> deleteResults = boardService.deleteBoard(idxes);
+        // TODO checking
+        List<Long> results = deleteResults.stream().map(BoardResponseDto.Delete::boardIdx).collect(Collectors.toList());
+        if (idxes.stream().allMatch(value -> results.contains(value))) {
+            log.info("all delete");
+        } else {
+            log.info("not all delete");
+        }
+
         return "redirect:/boards/list";
     }
 

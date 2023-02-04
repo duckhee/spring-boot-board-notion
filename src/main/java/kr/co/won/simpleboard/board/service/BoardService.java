@@ -5,6 +5,8 @@ import kr.co.won.simpleboard.board.dto.BoardResponseDto;
 import kr.co.won.simpleboard.utils.PageDto;
 import org.springframework.data.domain.Page;
 
+import java.util.List;
+
 public interface BoardService {
 
     /**
@@ -39,6 +41,13 @@ public interface BoardService {
      * Delete Board
      */
     default BoardResponseDto.Delete deleteBoard(Long boardIdx) {
+        return null;
+    }
+
+    /**
+     * Bulk Delete Board
+     */
+    default List<BoardResponseDto.Delete> deleteBoard(List<Long> boardIdxes) {
         return null;
     }
 }

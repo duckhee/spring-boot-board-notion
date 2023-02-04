@@ -8,13 +8,17 @@ import kr.co.won.simpleboard.board.exception.BoardException;
 import kr.co.won.simpleboard.board.persistence.BoardPersistence;
 import kr.co.won.simpleboard.utils.PageDto;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
@@ -70,5 +74,16 @@ public class BoardServiceImpl implements BoardService {
                 new BoardException(BoardErrorCode.BOARD_NOT_FOUND));
         boardPersistence.delete(findBoard);
         return BoardResponseDto.Delete.ofDomain(findBoard);
+    }
+
+    @Transactional
+    @Override
+    public List<BoardResponseDto.Delete> deleteBoard(List<Long> boardIdxes) {
+        List<BoardDomain> findBoards = boardPersistence.findByIdxIn(boardIdxes);
+        boardPersistence.deleteAllInBatch(findBoards);
+        List<BoardResponseDto.Delete> deleteResponse = findBoards.stream()
+                .map(board -> BoardResponseDto.Delete.ofDomain(board))
+                .collect(Collectors.toList());
+        return deleteResponse;
     }
 }
