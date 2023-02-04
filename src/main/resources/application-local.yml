@@ -31,4 +31,4 @@ server:
   error:
     include-binding-errors: ALWAYS
     include-exception: true
-    include-stacktrace: true
+    include-stacktrace: ALWAYS
