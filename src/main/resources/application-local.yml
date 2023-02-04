@@ -25,3 +25,10 @@ spring:
       ddl-auto: create
   thymeleaf:
     cache: false
+
+# dev error
+server:
+  error:
+    include-binding-errors: ALWAYS
+    include-exception: true
+    include-stacktrace: true
