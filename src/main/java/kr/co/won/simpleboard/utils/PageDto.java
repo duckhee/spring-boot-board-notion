@@ -25,7 +25,7 @@ public class PageDto {
 
     // page 가 0보다 낮은 값을 준다면, 1로 변경
     public void setPage(int page) {
-        this.page = page < 0 ? 0 : page;
+        this.page = page < 0 ? 1 : page;
     }
 
     public int getSize() {

@@ -65,7 +65,9 @@ public class BoardController {
         log.info("page dto : {}", pageDto);
         Page<BoardResponseDto.Paging> pagingPage = boardService.pagingBoard(pageDto);
         log.info("paging result = {}", pagingPage);
-        model.addAttribute("pagingPage", new PageMaker<>(pagingPage));
+        PageMaker<BoardResponseDto.Paging> paging = new PageMaker<>(pagingPage);
+        log.info("page : {} , total page number : {}", paging.toString(), paging.getPageList().size());
+        model.addAttribute("pagingPage", paging);
         model.addAttribute("pageDto", pageDto);
         return "board/boardListPage";
     }
