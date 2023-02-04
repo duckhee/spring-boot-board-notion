@@ -61,11 +61,12 @@
     </div>
 </th:block>
 <th:block layout:fragment="javascriptBlock">
-    <script type="text/javascript">
+    <script type="text/javascript" th:inline="javascript">
         const modify = () => {
             $("#modifyBtn").click(event => {
                 event.preventDefault();
                 let boardIdx = /*[[${board.boardIdx}]]*/ null;
+                console.log("board idx : ", boardIdx);
                 if (boardIdx !== null) {
                     location.href = "/boards/" + boardIdx + '/modify';
                     return;
@@ -76,9 +77,20 @@
                 }
             });
         }
+
+        // TODO Check enter flow
+        const goBack = () => {
+            $("#goBackBtn").click(event => {
+                event.preventDefault();
+                location.href = "/boards/list";
+            })
+        }
+
         $(document).ready(function () {
 
             $("#content").summernote("disable");
+            modify();
+            goBack();
         });
     </script>
 </th:block>

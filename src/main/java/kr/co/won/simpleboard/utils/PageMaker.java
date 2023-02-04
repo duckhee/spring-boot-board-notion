@@ -2,12 +2,14 @@ package kr.co.won.simpleboard.utils;
 
 import lombok.Getter;
 import lombok.ToString;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Slf4j
 @Getter
 @ToString(exclude = "pageList")
 public class PageMaker<T> {
@@ -23,7 +25,7 @@ public class PageMaker<T> {
     public PageMaker(Page<T> result) {
         this.result = result;
         this.currentPage = result.getPageable();
-        this.currentPageNumber = result.getNumber();
+        this.currentPageNumber = result.getNumber() + 1;
         this.totalPageNumber = result.getTotalPages();
         this.pageList = new ArrayList<>();
         calcPage();
@@ -48,9 +50,11 @@ public class PageMaker<T> {
         }
 
         for (int i = startNumber; i <= tempEndPageNumber; i++) {
+            log.info("page add : {} count : {}", startPage, i);
             pageList.add(startPage);
             startPage = startPage.next();
         }
         this.nextPage = startPage.getPageNumber() < totalPageNumber ? startPage : null;
     }
+
 }

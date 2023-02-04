@@ -3,6 +3,7 @@ package kr.co.won.simpleboard.board.dto;
 import com.querydsl.core.annotations.QueryProjection;
 import kr.co.won.simpleboard.board.domain.BoardDomain;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
@@ -15,20 +16,23 @@ public class BoardResponseDto {
     }
 
     @Data
+    @NoArgsConstructor
     public static class Paging {
 
+        private Long boardIdx;
         private String title;
         private LocalDateTime createdAt;
         private LocalDateTime updatedAt;
 
-        private Paging(String title, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        private Paging(Long boardIdx, String title, LocalDateTime createdAt, LocalDateTime updatedAt) {
+            this.boardIdx = boardIdx;
             this.title = title;
             this.createdAt = createdAt;
             this.updatedAt = updatedAt;
         }
 
         public static Paging ofDomain(BoardDomain board) {
-            return new Paging(board.getTitle(), board.getCreatedAt(), board.getUpdatedAt());
+            return new Paging(board.getIdx(), board.getTitle(), board.getCreatedAt(), board.getUpdatedAt());
         }
     }
 
@@ -45,8 +49,8 @@ public class BoardResponseDto {
         }
     }
 
-    public record Delete(Long boardIdx){
-        public static Delete ofDomain(BoardDomain board){
+    public record Delete(Long boardIdx) {
+        public static Delete ofDomain(BoardDomain board) {
             return new Delete(board.getIdx());
         }
     }

@@ -23,6 +23,7 @@ public class PageDto {
         return page;
     }
 
+    // page 가 0보다 낮은 값을 준다면, 1로 변경
     public void setPage(int page) {
         this.page = page < 0 ? 1 : page;
     }
@@ -31,6 +32,7 @@ public class PageDto {
         return size;
     }
 
+    // 최대 리스트 갯수는 50개로 제한
     public void setSize(int size) {
 
         this.size = size < DEFAULT_PAGE_SIZE || size > DEFAULT_MAX_PAGE_SIZE ? DEFAULT_PAGE_SIZE : size;
@@ -52,8 +54,9 @@ public class PageDto {
         this.keyword = keyword;
     }
 
+    // pageable 객체 생성
     public Pageable makePageable(int direction, String... props) {
         Sort.Direction sortDirection = direction == 0 ? Sort.Direction.DESC : Sort.Direction.ASC;
-        return PageRequest.of(this.page, this.size, Sort.by(sortDirection, props));
+        return PageRequest.of(this.page - 1, this.size, Sort.by(sortDirection, props));
     }
 }
