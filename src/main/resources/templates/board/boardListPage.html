@@ -42,7 +42,12 @@
                             </thead>
                             <!--./table column-->
                             <tbody>
-
+                            <tr th:each="board:${pagingPage.result}">
+                                <td th:text="${board.boardIdx}">board idx</td>
+                                <td th:text="${board.title}">board title</td>
+                                <td th:text="${#temporals.format(board.createdAt, 'yyyy-MM-dd HH:mm:ss')}">board create time</td>
+                                <td th:text="${#temporals.format(board.updatedAt, 'yyyy-MM-dd HH:mm:ss')}">board update time</td>
+                            </tr>
                             </tbody>
 
                         </table>

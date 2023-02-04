@@ -31,7 +31,7 @@
                 <!--./card-header-->
                 <div class="card-body">
                     <form id="createBoarForm" th:object="${boardForm}">
-                        <div class="form-group" >
+                        <div class="form-group">
                             <label class="col-form-label" for="title">Board Title</label>
                             <input type="text" th:field="*{title}" class="form-control">
                             <span th:errors="*{title}" class="text-danger">testing</span>
@@ -45,7 +45,7 @@
                 <!--./card-body-->
                 <div class="card-footer">
                     <div class="float-left">
-                        <button class="btn btn-danger">Cancel</button>
+                        <button class="btn btn-danger" id="cancelBtn">Cancel</button>
                     </div>
                     <div class="float-right">
                         <button class="btn btn-primary" id="submit">Summit</button>
@@ -59,29 +59,51 @@
     <!--./row-->
 </th:block>
 <th:block layout:fragment="javascriptBlock">
-    <script>
+    <script th:inline="javascript">
+
+        const updateBoardBtn = () => {
+            $("#submit").click(event => {
+                event.preventDefault();
+                // change html code
+                $('#summernote').summernote('code');
+                // $("#content").val(textCode);
+                console.log('title : ' + $("#title").val() + ", content : " + $("#summernote").val());
+                let boardForm = $("#createBoarForm");
+                let boardIdx = /*[[${board.boardIdx}]]*/ null;
+                if (boardIdx !== null) {
+                    boardForm.attr("method", "POST");
+                    boardForm.attr("action", "/boards/" + boardIdx + "/create");
+                    console.log(boardForm);
+                    boardForm.submit();
+                } else {
+                    console.log("editing process failed");
+                }
+            });
+        }
+
+        // TODO check enter flow and change
+        const goBackBtn = () => {
+            $("#cancelBtn").click(event => {
+                event.preventDefault();
+                let boardIdx = /*[[${board.boardIdx}]]*/ null;
+                if (boardIdx !== null) {
+                    location.href = "/boards/" + boardIdx;
+                } else {
+                    location.href = "/boards/list";
+                }
+            })
+        }
+
         $(document).ready(function () {
+            // editor
             $('#summernote').summernote({
                 height: 600,
                 maxHeight: 600,
                 minHeight: 600
             });
-            const createBoardBtn = () => {
-                $("#submit").click(event => {
-                    event.preventDefault();
-                    // change html code
-                    $('#summernote').summernote('code');
-                    // $("#content").val(textCode);
-                    console.log('title : ' + $("#title").val() + ", content : " + $("#summernote").val());
-                    let boardForm = $("#createBoarForm");
-                    boardForm.attr("method", "POST");
-                    boardForm.attr("action", "/boards/create")
-                    console.log(boardForm);
-                    boardForm.submit();
-                });
-            }
-            // board create function
-            createBoardBtn();
+            // update button
+            updateBoardBtn();
+            goBackBtn();
         });
     </script>
 </th:block>

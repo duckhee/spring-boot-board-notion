@@ -6,6 +6,7 @@ import kr.co.won.simpleboard.board.exception.BoardErrorCode;
 import kr.co.won.simpleboard.board.exception.BoardException;
 import kr.co.won.simpleboard.board.service.BoardService;
 import kr.co.won.simpleboard.utils.PageDto;
+import kr.co.won.simpleboard.utils.PageMaker;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -64,14 +65,16 @@ public class BoardController {
         log.info("page dto : {}", pageDto);
         Page<BoardResponseDto.Paging> pagingPage = boardService.pagingBoard(pageDto);
         log.info("paging result = {}", pagingPage);
-        model.addAttribute("pagingPage", pagingPage);
+        model.addAttribute("pagingPage", new PageMaker<>(pagingPage));
+        model.addAttribute("pageDto", pageDto);
         return "board/boardListPage";
     }
 
     @GetMapping(path = "/{boardIdx}")
-    public String boardDetailPage(@PathVariable(name = "boardIdx") Long idx, Model model) {
+    public String boardDetailPage(PageDto pageDto, @PathVariable(name = "boardIdx") Long idx, Model model) {
         BoardResponseDto.Detail findBoard = boardService.detailBoard(idx);
         model.addAttribute("board", findBoard);
+        model.addAttribute("pageDto", pageDto);
         return "board/boardDetailPage";
     }
 
@@ -82,6 +85,7 @@ public class BoardController {
         BoardForm.Update updateForm = new BoardForm.Update();
         updateForm.setTitle(findBoard.title());
         updateForm.setContent(findBoard.content());
+        model.addAttribute("board", findBoard);
         model.addAttribute("boardForm", updateForm);
         return "board/boardModifyPage";
     }

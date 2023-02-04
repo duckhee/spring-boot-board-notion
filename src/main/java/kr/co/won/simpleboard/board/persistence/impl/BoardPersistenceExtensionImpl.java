@@ -38,9 +38,11 @@ public class BoardPersistenceExtensionImpl extends QuerydslRepositorySupport imp
         JPQLQuery<BoardResponseDto.Paging> baseQuery =
                 from(board)
                         .select(Projections.fields(BoardResponseDto.Paging.class,
+                                board.idx.as("boardIdx"),
                                 board.title.as("title"),
                                 board.createdAt.as("createdAt"),
-                                board.updatedAt.as("updatedAt")));
+                                board.updatedAt.as("updatedAt")))
+                        .where(board.deletedFlag.eq(false));
         // TODO search type define
         if (pageDto.getType() != null) {
             switch (pageDto.getType().toLowerCase()) {
@@ -52,13 +54,14 @@ public class BoardPersistenceExtensionImpl extends QuerydslRepositorySupport imp
 
         // total count
         long totalContentNumber = baseQuery.fetchCount();
+        log.info("pageable offset : {}, page number : {} get page dto : {}", pageable.getOffset(), pageable.getPageNumber(), pageDto.getPage());
         // result
         List<BoardResponseDto.Paging> resultPage = baseQuery
-                .limit(pageDto.getSize())
-                .offset(pageDto.getPage())
+                .limit(pageable.getPageSize())
+                .offset(pageable.getOffset())
                 .orderBy(board.createdAt.desc())
                 .fetch();
-        log.info("result total : {}, result page : {}", totalContentNumber, resultPage.toString());
+        log.info("result total : {}, result page : {}, resultPage count size : {}", totalContentNumber, resultPage.toString(), resultPage.size());
         return new PageImpl<>(resultPage, pageable, totalContentNumber);
     }
 }
