@@ -53,6 +53,7 @@ public class BoardDomain {
     private BoardDomain(String title, String content) {
         this.title = title;
         this.content = content;
+        this.deletedFlag = false;
     }
 
     public static BoardDomain of(String title, String content) {
