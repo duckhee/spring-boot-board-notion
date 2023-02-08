@@ -1,6 +1,5 @@
 package kr.co.won.simpleboard.board.persistence.impl;
 
-import com.querydsl.core.annotations.QueryProjection;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.JPQLQuery;
 import kr.co.won.simpleboard.board.domain.BoardDomain;
@@ -13,14 +12,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
-import org.springframework.expression.spel.ast.Projection;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-import static com.querydsl.jpa.JPAExpressions.select;
-import static com.querydsl.jpa.JPAExpressions.selectFrom;
 import static kr.co.won.simpleboard.board.domain.QBoardDomain.boardDomain;
 
 @Slf4j
