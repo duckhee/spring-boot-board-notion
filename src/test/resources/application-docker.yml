@@ -1,0 +1,20 @@
+spring:
+  jpa:
+    database: mysql
+    hibernate:
+      ddl-auto: create
+    open-in-view: true
+  #    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+  datasource:
+    url: jdbc:tc:mysql:latest:///test
+    username: root
+    password: test
+    driver-class-name: org.testcontainers.jdbc.ContainerDatabaseDriver
+    hikari:
+      driver-class-name: org.testcontainers.jdbc.ContainerDatabaseDriver
+      username: root
+      password: test
+      jdbc-url: jdbc:tc:mysql:latest:///test
+mybatis:
+  mapper-locations: classpath:mappers/*-Mapper.xml
+  config-location: classpath:mybatis-config.xml

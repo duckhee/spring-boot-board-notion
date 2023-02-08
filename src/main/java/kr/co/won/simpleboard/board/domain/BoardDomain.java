@@ -1,9 +1,7 @@
 package kr.co.won.simpleboard.board.domain;
 
 import jakarta.persistence.*;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -12,6 +10,8 @@ import org.hibernate.annotations.Where;
 import java.time.LocalDateTime;
 
 @Getter
+@ToString
+@EqualsAndHashCode(of = {"idx"})
 @Entity
 @Table(name = "tbl_board")
 @Where(clause = "deleted_flag=false")
@@ -53,6 +53,7 @@ public class BoardDomain {
     private BoardDomain(String title, String content) {
         this.title = title;
         this.content = content;
+        this.deletedFlag = false;
     }
 
     public static BoardDomain of(String title, String content) {

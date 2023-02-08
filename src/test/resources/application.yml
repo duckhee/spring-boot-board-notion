@@ -1,0 +1,12 @@
+# spring test application default setting
+spring:
+  datasource:
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+  jpa:
+    database: H2
+    hibernate:
+      ddl-auto: 'create-drop'
+    open-in-view: false
+    show-sql: true

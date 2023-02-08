@@ -107,6 +107,19 @@
             <artifactId>mysql</artifactId>
             <scope>test</scope>
         </dependency>
+        <!--easy random parameter make dependency-->
+        <dependency>
+            <groupId>org.jeasy</groupId>
+            <artifactId>easy-random-core</artifactId>
+            <version>5.0.0</version>
+            <scope>test</scope>
+        </dependency>
+        <!--TODO: product build remove -> database sql spy dependency-->
+        <dependency>
+            <groupId>com.github.gavlyukovskiy</groupId>
+            <artifactId>p6spy-spring-boot-starter</artifactId>
+            <version>1.8.1</version>
+        </dependency>
     </dependencies>
     <dependencyManagement>
         <dependencies>
