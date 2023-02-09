@@ -44,8 +44,7 @@ public class BoardServiceImpl implements BoardService {
     @Override
     public BoardResponseDto.Detail detailBoard(Long boardIdx) {
         BoardDomain findBoard = boardPersistence.findByIdx(boardIdx).orElseThrow(() ->
-                // TODO custom exception
-                new IllegalArgumentException());
+                new BoardException(BoardErrorCode.BOARD_NOT_FOUND));
         return BoardResponseDto.Detail.ofDomain(findBoard);
     }
 
