@@ -1,7 +1,12 @@
 package kr.co.won.simpleboard.board.persistence;
 
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import kr.co.won.simpleboard.board.domain.BoardDomain;
+import kr.co.won.simpleboard.board.dto.BoardResponseDto;
 import kr.co.won.simpleboard.board.factory.BoardDomainRandomFactory;
+import kr.co.won.simpleboard.board.factory.BoardRandomFactory;
+import kr.co.won.simpleboard.utils.PageDto;
 import lombok.extern.slf4j.Slf4j;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -10,7 +15,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.test.annotation.Rollback;
+
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.*;
@@ -21,7 +30,8 @@ import static org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTest
 @AutoConfigureTestDatabase(replace = Replace.NONE)
 @DisplayName(value = "Board DataBase Tests")
 @Import(value = {
-        BoardDomainRandomFactory.class
+        BoardDomainRandomFactory.class,
+        BoardRandomFactory.class
 })
 class BoardPersistenceTest {
 
@@ -30,6 +40,11 @@ class BoardPersistenceTest {
 
     @Autowired
     private BoardDomainRandomFactory factory;
+    @Autowired
+    private BoardRandomFactory dbFactory;
+
+    @PersistenceContext
+    private EntityManager entityManager;
 
     @DisplayName(value = "01. create Board Test")
     @Test
@@ -47,5 +62,20 @@ class BoardPersistenceTest {
         Assertions.assertThat(savedBoard.isDeletedFlag())
                 .isEqualTo(testBoard.isDeletedFlag())
                 .isEqualTo(false);
+    }
+
+    @DisplayName(value = "02. paging Board Test")
+    @Test
+    void boardPagingTests() {
+        int pageSize = 10;
+        PageDto pageDto = new PageDto();
+        pageDto.setSize(pageSize);
+        Pageable pageable = pageDto.makePageable(0, "createdAt");
+        List<BoardDomain> board = dbFactory.createBoard("title", "content", pageSize);
+        entityManager.flush();
+        entityManager.clear();
+        Page<BoardResponseDto.Paging> pagingBoard = boardPersistence.pagingBoard(pageDto, pageable);
+        Assertions.assertThat(pagingBoard.getTotalElements()).isEqualTo(board.size());
+        
     }
 }
