@@ -1,23 +1,57 @@
 package kr.co.won.simpleboard.user.controller;
 
+import kr.co.won.simpleboard.user.dto.UserForm;
+import kr.co.won.simpleboard.user.dto.UserRegisteredForm;
+import kr.co.won.simpleboard.user.dto.UserResponseDto;
+import kr.co.won.simpleboard.user.service.UserService;
+import kr.co.won.simpleboard.user.validation.RegisteredValidator;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.Errors;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+@Slf4j
 @Controller
 @RequestMapping(path = "/users")
 @RequiredArgsConstructor
 public class UserController {
 
+    private final UserService userService;
+
+    /**
+     * validation
+     */
+    private final RegisteredValidator registeredValidator;
+
+    @InitBinder(value = "userRegisteredForm")
+    public void initRegisteredValidator(WebDataBinder dataBinder) {
+        dataBinder.addValidators(registeredValidator);
+    }
+
     @GetMapping(path = "/registered")
-    public String userRegisteredPage() {
-        return "";
+    public String userRegisteredPage(Model model) {
+        model.addAttribute(new UserRegisteredForm());
+        return "user/userRegisteredPage";
     }
 
     @PostMapping(path = "/registered")
-    public String userRegisteredDo() {
-        return "";
+    public String userRegisteredDo(@Validated UserRegisteredForm form, Errors errors, Model model, RedirectAttributes flash) {
+        log.info("post registered user : {}", form);
+        if (errors.hasErrors()) {
+            model.addAttribute(form);
+            return "user/userRegisteredPage";
+        }
+//        UserResponseDto.Registered newUser = userService.registeredUser(form);
+        flash.addFlashAttribute("msg", "registered user. verified email send. check email");
+        return "redirect:/";
     }
+
 }

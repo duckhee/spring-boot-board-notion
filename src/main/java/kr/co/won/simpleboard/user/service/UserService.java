@@ -1,6 +1,7 @@
 package kr.co.won.simpleboard.user.service;
 
 import kr.co.won.simpleboard.user.dto.UserForm;
+import kr.co.won.simpleboard.user.dto.UserRegisteredForm;
 import kr.co.won.simpleboard.user.dto.UserResponseDto;
 
 public interface UserService {
@@ -8,7 +9,7 @@ public interface UserService {
     /**
      * user registered method
      */
-    default UserResponseDto.Registered registeredUser(UserForm.Registered form) {
+    default UserResponseDto.Registered registeredUser(UserRegisteredForm form) {
         return null;
     }
 
