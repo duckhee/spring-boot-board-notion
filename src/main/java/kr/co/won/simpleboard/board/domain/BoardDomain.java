@@ -1,11 +1,9 @@
 package kr.co.won.simpleboard.board.domain;
 
 import jakarta.persistence.*;
+import jakarta.persistence.Table;
 import lombok.*;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.SQLDelete;
-import org.hibernate.annotations.UpdateTimestamp;
-import org.hibernate.annotations.Where;
+import org.hibernate.annotations.*;
 
 import java.time.LocalDateTime;
 
@@ -16,6 +14,8 @@ import java.time.LocalDateTime;
 @Table(name = "tbl_board")
 @Where(clause = "deleted_flag=false")
 @SQLDelete(sql = "UPDATE tbl_board SET deleted_flag=true where idx = ?")
+@Filter(name = "allDataFilter")
+@FilterDef(name = "allDataFilter", defaultCondition = "deleted_flag not nullable")
 public class BoardDomain {
 
     protected BoardDomain() {

@@ -15,5 +15,5 @@ public interface BoardPersistence extends JpaRepository<BoardDomain, Long>, Boar
     List<BoardDomain> findByIdxIn(List<Long> boardIdxes);
 
     @Query(value = "SELECT * FROM tbl_board as board WHERE board.deleted_flag is not NULL", nativeQuery = true)
-    List<BoardDomain> findAll();
+    List<BoardDomain> allBoards();
 }
