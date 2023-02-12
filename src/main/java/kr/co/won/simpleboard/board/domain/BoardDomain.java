@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @EqualsAndHashCode(of = {"idx"})
 @Entity
 @Table(name = "tbl_board")
-@Where(clause = "deleted_flag=false")
+@Where(clause = "deleted_flag = false")
 @SQLDelete(sql = "UPDATE tbl_board SET deleted_flag=true where idx = ?")
 @Filter(name = "allDataFilter")
 @FilterDef(name = "allDataFilter", defaultCondition = "deleted_flag not nullable")

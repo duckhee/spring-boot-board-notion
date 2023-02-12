@@ -12,12 +12,13 @@ import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.annotations.Where;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Getter
 @Entity
 @Table(name = "tbl_user")
 @EqualsAndHashCode(of = {"idx"})
-@ToString(exclude = {})
+@ToString
 @SQLDelete(sql = "UPDATE tbl_user SET deleted_flag = true where idx=?")
 @Where(clause = "deleted_flag = false")
 public class UserDomain {
@@ -29,7 +30,7 @@ public class UserDomain {
     @Id
     @Column(name = "idx", nullable = false, unique = true)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long idx;
+    private Long idx;
 
     @Column(name = "user_id", nullable = false, unique = true)
     private String userId;
@@ -71,6 +72,35 @@ public class UserDomain {
         this.email = userEmail;
         this.name = name;
         this.password = password;
+        this.verifiedToken = UUID.randomUUID().toString();
     }
 
+    public static UserDomain of(String userId, String userEmail, String name, String password) {
+        return new UserDomain(userId, userEmail, name, password);
+    }
+
+    /** User Domain Method */
+
+    /**
+     * verified token generate
+     */
+    public String generateToken() {
+        this.verifiedToken = UUID.randomUUID().toString();
+        return this.verifiedToken;
+    }
+
+    /**
+     * verified token
+     */
+    public boolean tokenVerified(String token) {
+        if (token.isBlank()) {
+            return false;
+        }
+        if (token.equals(this.verifiedToken)) {
+            this.verifiedTime = LocalDateTime.now();
+            this.verifiedFlag = true;
+            return true;
+        }
+        return false;
+    }
 }
