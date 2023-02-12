@@ -2,6 +2,7 @@ package kr.co.won.simpleboard.user.service.impl;
 
 import kr.co.won.simpleboard.user.domain.UserDomain;
 import kr.co.won.simpleboard.user.dto.UserForm;
+import kr.co.won.simpleboard.user.dto.UserRegisteredForm;
 import kr.co.won.simpleboard.user.dto.UserResponseDto;
 import kr.co.won.simpleboard.user.persistence.UserPersistence;
 import kr.co.won.simpleboard.user.persistence.UserPersistenceExtension;
@@ -21,7 +22,7 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public UserResponseDto.Registered registeredUser(UserForm.Registered form) {
+    public UserResponseDto.Registered registeredUser(UserRegisteredForm form) {
         UserDomain newUser = UserDomain.of(form.getUserId(), form.getUserEmail(), form.getName(), form.getPassword());
         UserDomain savedUser = userPersistence.save(newUser);
         return UserResponseDto.Registered.ofDomain(savedUser);
