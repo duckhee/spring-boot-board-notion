@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      data-layout-decorate="~{layout/commonLayout}">
+<head>
+    <title>Board List Page</title>
+</head>
+<body>
+<th:block layout:fragment="mainContentHeader">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1 class="m-0">Dashboard</h1>
+            </div><!-- /.col -->
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="#" th:href="@{/}">Home</a></li>
+                    <li class="breadcrumb-item active">Board List</li>
+                </ol>
+            </div><!-- /.col -->
+        </div><!-- /.row -->
+    </div><!-- /.container-fluid -->
+</th:block>
+<th:block layout:fragment="mainContent">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Board List </h3>
+                    </div>
+                    <!--./card-header-->
+                    <div class="card-body">
+                        <table id="boardList" class="table table-bordered table-hover">
+                            <thead>
+                            <tr>
+                                <th>board no</th>
+                                <th>title</th>
+                                <th>create time</th>
+                                <th>update time</th>
+                            </tr>
+                            </thead>
+                            <!--./table column-->
+                            <tbody>
+                            <tr th:each="board:${pagingPage?.result}">
+                                <td th:text="${board.boardIdx}">board idx</td>
+                                <td th:text="${board.title}">board title</td>
+                                <td th:text="${#temporals.format(board.createdAt, 'yyyy-MM-dd HH:mm:ss')}">board create
+                                    time
+                                </td>
+                                <td th:text="${#temporals.format(board.updatedAt, 'yyyy-MM-dd HH:mm:ss')}">board update
+                                    time
+                                </td>
+                            </tr>
+                            </tbody>
+
+                        </table>
+                    </div>
+                    <!--./card-body-->
+                    <div class="card-footer">
+                        <!--./page information -->
+                        <div class="row">
+                            <div class="col-sm-12 col-md-5">
+                                <!--<div class="dataTables_info" id="example2_info" role="status" aria-live="polite">
+                                    Showing 1 to 10 of 57 entries
+                                </div>-->
+                            </div>
+                            <div class="col-sm-12 col-md-7">
+                                <div class="dataTables_paginate paging_simple_numbers" id="example2_paginate">
+                                    <ul class="pagination">
+                                        <li class="paginate_button page-item previous "
+                                            th:classappend="${pagingPage?.prevPage != null ? '' : ' disabled'} "
+                                            id="example2_previous">
+                                            <a href="#" aria-controls="example2"
+                                               data-dt-idx="7"
+                                               tabindex="0"
+                                               class="page-link"
+                                                th:with="baseUrl=${pagingPage?.prevPage != null ? '/boards/list':'#'}"
+                                            th:href="@{${baseUrl}(page=${pagingPage?.prevPage != null ? pagingPage?.prevPage.pageNumber+1 : ''})}">Previous</a>
+                                        </li>
+                                        <li th:if="${pagingPage != null && pagingPage?.getTotalPageNumber() > 0}"
+                                            th:each="pageNumber: ${pagingPage.pageList}"
+                                            class="paginate_button page-item"
+                                            th:classappend="${pageNumber.pageNumber == (pagingPage.currentPageNumber -1) ? ' active': ''}">
+                                            <a href="#"
+                                               aria-controls="example2" class="page-link"
+                                               th:text="${pageNumber.pageNumber + 1}"
+                                            >page number</a>
+                                        </li>
+                                        <li class="paginate_button page-item next" id="example2_next"
+                                            th:classappend="${pagingPage.nextPage != null ? '': ' disabled'}">
+                                            <a href="#"
+                                               th:with="baseUrl=(${pagingPage.nextPage}!= null?'/boards/list' : '#')"
+                                               th:href="@{${baseUrl}(page=${pagingPage.nextPage != null ? pagingPage.nextPage.pageNumber+1 : ''})}"
+                                               aria-controls="example2"
+                                               data-dt-idx="7"
+                                               tabindex="0"
+                                               class="page-link">Next</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--./card-->
+            </div>
+            <!--./col-12-->
+        </div>
+        <!--./row-->
+    </div>
+    <!--./container-fluid-->
+
+    <form th:object="${pageDto}">
+        <input type="hidden" th:field="*{keyword}"/>
+        <input type="hidden" th:field="*{type}"/>
+        <input type="hidden" th:field="*{page}"/>
+        <input type="hidden" th:field="*{size}"/>
+    </form>
+    <!--./pageDto-->
+
+</th:block>
+</body>
+</html>

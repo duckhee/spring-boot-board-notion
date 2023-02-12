@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      data-layout-decorate="~{layout/commonLayout}">
+<head>
+    <title>Board Registered Page</title>
+</head>
+<body>
+<th:block layout:fragment="mainContentHeader">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1 class="m-0">Dashboard</h1>
+            </div><!-- /.col -->
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="#">Home</a></li>
+                    <li class="breadcrumb-item active">Board create</li>
+                </ol>
+            </div><!-- /.col -->
+        </div><!-- /.row -->
+    </div><!-- /.container-fluid -->
+</th:block>
+<th:block layout:fragment="mainContent">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card ard-outline card-info">
+                <div class="card-header">
+                    <h3 class="card-title">Board Create</h3>
+                </div>
+                <!--./card-header-->
+                <div class="card-body">
+                    <form id="createBoarForm" th:object="${boardForm}">
+                        <div class="form-group" >
+                            <label class="col-form-label" for="title">Board Title</label>
+                            <input type="text" th:field="*{title}" class="form-control">
+                            <span th:errors="*{title}" class="text-danger">testing</span>
+                        </div>
+                        <textarea id="summernote" th:field="*{content}" name="content">
+
+                    </textarea>
+                        <span th:errors="*{content}" class="text-danger">content error</span>
+                    </form>
+                </div>
+                <!--./card-body-->
+                <div class="card-footer">
+                    <div class="float-left">
+                        <button class="btn btn-danger">Cancel</button>
+                    </div>
+                    <div class="float-right">
+                        <button class="btn btn-primary" id="submit">Summit</button>
+                    </div>
+                </div>
+            </div>
+            <!--./card-->
+        </div>
+        <!--./col-md-12-->
+    </div>
+    <!--./row-->
+</th:block>
+<th:block layout:fragment="javascriptBlock">
+    <script>
+        $(document).ready(function () {
+            $('#summernote').summernote({
+                height: 600,
+                maxHeight: 600,
+                minHeight: 600
+            });
+            const createBoardBtn = () => {
+                $("#submit").click(event => {
+                    event.preventDefault();
+                    // change html code
+                    $('#summernote').summernote('code');
+                    // $("#content").val(textCode);
+                    console.log('title : ' + $("#title").val() + ", content : " + $("#summernote").val());
+                    let boardForm = $("#createBoarForm");
+                    boardForm.attr("method", "POST");
+                    boardForm.attr("action", "/boards/create")
+                    console.log(boardForm);
+                    boardForm.submit();
+                });
+            }
+            // board create function
+            createBoardBtn();
+        });
+    </script>
+</th:block>
+</body>
+</html>

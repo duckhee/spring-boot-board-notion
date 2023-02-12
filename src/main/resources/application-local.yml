@@ -1,0 +1,35 @@
+spring:
+  config:
+    activate:
+      on-profile:
+        - local
+  datasource:
+    driver-class-name: org.h2.Driver
+    #    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:h2:mem:notionBoardDB
+    username: sa
+    password:
+  h2:
+    console:
+      enabled: true
+  jpa:
+    properties:
+      hibernate:
+        jpa:
+          batch_size: 50
+        order_inserts: true
+        order_updates: true
+    database: H2
+    open-in-view: false
+    show-sql: true
+    hibernate:
+      ddl-auto: create
+  thymeleaf:
+    cache: false
+
+# dev error
+server:
+  error:
+    include-binding-errors: ALWAYS
+    include-exception: true
+    include-stacktrace: ALWAYS

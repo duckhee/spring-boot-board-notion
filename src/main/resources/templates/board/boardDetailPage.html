@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      data-layout-decorate="~{layout/commonLayout}">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${'board title '+board.title}">title</title>
+</head>
+<body>
+<th:block layout:fragment="mainContentHeader">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1 class="m-0">Dashboard</h1>
+            </div><!-- /.col -->
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a th:href="@{/}" href="#">Home</a></li>
+                    <li class="breadcrumb-item active">Board Detail</li>
+                </ol>
+            </div><!-- /.col -->
+        </div><!-- /.row -->
+    </div><!-- /.container-fluid -->
+</th:block>
+<th:block layout:fragment="mainContent">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="card" style="max-width: 60%; margin:150px auto">
+                    <div class="card-header">
+                        <h3 class="card-title">Board Detail</h3>
+                    </div>
+                    <!--./card-header-->
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label for="title" class="form-check-label">board title</label>
+                            <div class="form-control" id="title" th:text="${board.title()}">board title</div>
+                        </div>
+                        <!--./form-group-->
+                        <div class="form-group">
+                            <label for="content" class="form-check-label">Content</label>
+                            <div class="form-control" id="content" th:utext="${board.content()}">
+
+                            </div>
+                        </div>
+                    </div>
+                    <!--./card-body-->
+                    <div class="card-footer">
+                        <div class="float-right">
+                            <buttont type="button" id="goBackBtn" class="btn btn-default">Go Back</buttont>
+                            <button type="button" id="modifyBtn" class="btn btn-warning">Update</button>
+                        </div>
+                    </div>
+                    <!--./card-footer-->
+                </div>
+                <!--./card-->
+            </div>
+        </div>
+        <!--./row-->
+        <!--./page-dto-->
+    </div>
+</th:block>
+<th:block layout:fragment="javascriptBlock">
+    <script type="text/javascript" th:inline="javascript">
+        const modify = () => {
+            $("#modifyBtn").click(event => {
+                event.preventDefault();
+                let boardIdx = /*[[${board.boardIdx}]]*/ null;
+                console.log("board idx : ", boardIdx);
+                if (boardIdx !== null) {
+                    location.href = "/boards/" + boardIdx + '/modify';
+                    return;
+                } else {
+                    // TODO change modal
+                    alert("not exist board");
+                    return;
+                }
+            });
+        }
+
+        // TODO Check enter flow
+        const goBack = () => {
+            $("#goBackBtn").click(event => {
+                event.preventDefault();
+                location.href = "/boards/list";
+            })
+        }
+
+        $(document).ready(function () {
+
+            $("#content").summernote("disable");
+            modify();
+            goBack();
+        });
+    </script>
+</th:block>
+</body>
+</html>
