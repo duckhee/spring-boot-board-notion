@@ -29,4 +29,15 @@ public class UserResponseDto {
         }
     }
 
+    public record Verified(Long userIdx, String userId, String email, boolean verifiedFlag) {
+
+        public static Verified verified(UserDomain user, boolean flag) {
+            return new Verified(user.getIdx(), user.getUserId(), user.getEmail(), flag);
+        }
+
+        public static Verified ofDomain(UserDomain user) {
+            return new Verified(user.getIdx(), user.getUserId(), user.getEmail(), user.isVerifiedFlag());
+        }
+    }
+
 }

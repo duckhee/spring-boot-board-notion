@@ -12,10 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.InitBinder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Slf4j
@@ -61,4 +58,9 @@ public class UserController {
         return "user/userProfilePage";
     }
 
+    @GetMapping(path = "/verified-token")
+    public String verifiedTokenPage(Model model, @RequestParam(name = "token") String token, @RequestParam(name = "email") String userEmail) {
+
+        return "";
+    }
 }
