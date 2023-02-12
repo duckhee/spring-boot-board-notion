@@ -12,6 +12,4 @@ public interface BoardPersistenceExtension {
      */
     Page<BoardResponseDto.Paging> pagingBoard(PageDto pageDto, Pageable pageable);
 
-    /** Paging Board all */
-    Page<BoardResponseDto.Paging> pagingBoardAll(PageDto pageDto, Pageable pageable);
 }
