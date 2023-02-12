@@ -49,9 +49,16 @@ public class UserController {
             model.addAttribute(form);
             return "user/userRegisteredPage";
         }
-//        UserResponseDto.Registered newUser = userService.registeredUser(form);
-        flash.addFlashAttribute("msg", "registered user. verified email send. check email");
+        UserResponseDto.Registered newUser = userService.registeredUser(form);
+        flash.addFlashAttribute("msg", "registered user. verified email " + newUser.email() + " send. check email");
         return "redirect:/";
+    }
+
+    // TODO profile using get Spring SecuritySessionHolder
+    @GetMapping(path = "/profile")
+    public String userProfilePage(Model model) {
+
+        return "user/userProfilePage";
     }
 
 }
