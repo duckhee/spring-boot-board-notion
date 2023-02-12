@@ -93,6 +93,9 @@ class BoardPersistenceTest {
         assertThrows(NoSuchElementException.class, () -> {
             findBoard.get();
         });
+        List<BoardDomain> result = boardPersistence.findAll();
+        log.info("find Board : {}", result.get(0).toString());
+        log.info("board result : {}", result.size());
 //        List<BoardDomain> findBoard = entityManager.createQuery("SELECT * FROM BoardDomain board WHERE board.idx=:boardIdx", BoardDomain.class)
 //                .setParameter("boardIdx", board.getIdx()).getResultList();
 //        log.info("board find : {}", findBoard.toString());

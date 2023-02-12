@@ -60,4 +60,37 @@ public class BoardPersistenceExtensionImpl extends QuerydslRepositorySupport imp
         log.info("result total : {}, result page : {}, resultPage count size : {}", totalContentNumber, resultPage.toString(), resultPage.size());
         return new PageImpl<>(resultPage, pageable, totalContentNumber);
     }
+
+    @Override
+    public Page<BoardResponseDto.Paging> pagingBoardAll(PageDto pageDto, Pageable pageable) {
+        QBoardDomain board = boardDomain;
+        JPQLQuery<BoardResponseDto.Paging> baseQuery =
+                from(board)
+                        .select(Projections.fields(BoardResponseDto.Paging.class,
+                                board.idx.as("boardIdx"),
+                                board.title.as("title"),
+                                board.createdAt.as("createdAt"),
+                                board.updatedAt.as("updatedAt")))
+                        .where(board.deletedFlag.isNotNull());
+        // TODO search type define
+        if (pageDto.getType() != null) {
+            switch (pageDto.getType().toLowerCase()) {
+                case "title":
+                    baseQuery.where(board.title.like("%" + pageDto.getKeyword() + "%"));
+                    break;
+            }
+        }
+
+        // total count
+        long totalContentNumber = baseQuery.fetchCount();
+        log.info("pageable offset : {}, page number : {} get page dto : {}", pageable.getOffset(), pageable.getPageNumber(), pageDto.getPage());
+        // result
+        List<BoardResponseDto.Paging> resultPage = baseQuery
+                .limit(pageable.getPageSize())
+                .offset(pageable.getOffset())
+                .orderBy(board.createdAt.desc())
+                .fetch();
+        log.info("result total : {}, result page : {}, resultPage count size : {}", totalContentNumber, resultPage.toString(), resultPage.size());
+        return new PageImpl<>(resultPage, pageable, totalContentNumber);
+    }
 }
