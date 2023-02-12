@@ -27,4 +27,18 @@ public class UserServiceImpl implements UserService {
         UserDomain savedUser = userPersistence.save(newUser);
         return UserResponseDto.Registered.ofDomain(savedUser);
     }
+
+    @Transactional
+    @Override
+    public UserResponseDto.Verified verifiedTokenUser(String userEmail, String token) {
+        UserDomain findUser = userPersistence.findByEmail(userEmail).orElseThrow(() -> {
+            // TODO custom user exception
+            throw new IllegalArgumentException();
+        });
+        // TODO check throw or not
+        if (!findUser.tokenVerified(token)) {
+            UserResponseDto.Verified.verified(findUser, false);
+        }
+        return UserResponseDto.Verified.verified(findUser, true);
+    }
 }

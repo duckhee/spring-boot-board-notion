@@ -13,6 +13,12 @@ public interface UserService {
         return null;
     }
 
+    /**
+     * user verified method
+     */
+    default UserResponseDto.Verified verifiedTokenUser(String userEmail, String token) {
+        return null;
+    }
 
     /**
      * user profile method
@@ -48,5 +54,6 @@ public interface UserService {
     default UserResponseDto.UpdatePassword updatePassword(Long userIdx, UserForm.UpdatePassword form) {
         return null;
     }
+
 
 }
