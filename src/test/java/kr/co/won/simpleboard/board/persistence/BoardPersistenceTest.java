@@ -20,6 +20,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.test.annotation.Rollback;
 
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.*;
@@ -76,6 +78,23 @@ class BoardPersistenceTest {
         entityManager.clear();
         Page<BoardResponseDto.Paging> pagingBoard = boardPersistence.pagingBoard(pageDto, pageable);
         Assertions.assertThat(pagingBoard.getTotalElements()).isEqualTo(board.size());
-        
+
+    }
+
+    @DisplayName(value = "04. delete Board Test")
+    @Test
+    void boardDeleteTests() {
+        BoardDomain board = dbFactory.createBoard("testing", "testing content");
+        entityManager.flush();
+        entityManager.clear();
+        boardPersistence.delete(board);
+        Optional<BoardDomain> findBoard = boardPersistence.findByIdx(board.getIdx());
+
+        assertThrows(NoSuchElementException.class, () -> {
+            findBoard.get();
+        });
+//        List<BoardDomain> findBoard = entityManager.createQuery("SELECT * FROM BoardDomain board WHERE board.idx=:boardIdx", BoardDomain.class)
+//                .setParameter("boardIdx", board.getIdx()).getResultList();
+//        log.info("board find : {}", findBoard.toString());
     }
 }

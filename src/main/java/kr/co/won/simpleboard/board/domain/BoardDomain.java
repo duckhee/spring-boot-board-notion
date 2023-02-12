@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "tbl_board")
 @Where(clause = "deleted_flag=false")
-@SQLDelete(sql = "deleted_flag=true where idx = ?")
+@SQLDelete(sql = "UPDATE tbl_board SET deleted_flag=true where idx = ?")
 public class BoardDomain {
 
     protected BoardDomain() {
