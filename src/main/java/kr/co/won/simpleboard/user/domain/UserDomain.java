@@ -12,7 +12,11 @@ import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.annotations.Where;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Getter
 @Entity
@@ -66,6 +70,10 @@ public class UserDomain {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
+    @Builder.Default
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<UserRoleDomain> roles = new HashSet<>();
+
     @Builder
     private UserDomain(String userId, String userEmail, String name, String password) {
         this.userId = userId;
@@ -102,5 +110,32 @@ public class UserDomain {
             return true;
         }
         return false;
+    }
+
+    /**
+     * user role add Method
+     */
+    public void addRole(UserRoleDomain role) {
+        this.roles.add(role);
+        role.addUser(this);
+    }
+
+    public void addRole(UserRoleDomain... roles) {
+        Arrays.stream(roles).forEach(role -> {
+            this.roles.add(role);
+            role.addUser(this);
+        });
+    }
+
+    /**
+     * user role check Method
+     */
+    public boolean hasRole(UserRole role) {
+        return this.roles.stream().map(UserRoleDomain::getRole).collect(Collectors.toSet()).contains(role);
+    }
+
+    public boolean hasRole(UserRole... roles) {
+        Set<UserRole> searchRoles = Arrays.stream(roles).collect(Collectors.toSet());
+        return this.roles.stream().map(UserRoleDomain::getRole).anyMatch(role -> searchRoles.contains(role));
     }
 }

@@ -43,11 +43,13 @@ public class UserController {
     public String userRegisteredDo(@Validated UserRegisteredForm form, Errors errors, Model model, RedirectAttributes flash) {
         log.info("post registered user : {}", form);
         if (errors.hasErrors()) {
+            log.info("validation error : {}", errors.toString());
             model.addAttribute(form);
             return "user/userRegisteredPage";
         }
         UserResponseDto.Registered newUser = userService.registeredUser(form);
         flash.addFlashAttribute("msg", "registered user. verified email " + newUser.email() + " send. check email");
+        // TODO login page redirect
         return "redirect:/";
     }
 

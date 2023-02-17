@@ -1,6 +1,8 @@
 package kr.co.won.simpleboard.user.service.impl;
 
 import kr.co.won.simpleboard.user.domain.UserDomain;
+import kr.co.won.simpleboard.user.domain.UserRole;
+import kr.co.won.simpleboard.user.domain.UserRoleDomain;
 import kr.co.won.simpleboard.user.dto.UserForm;
 import kr.co.won.simpleboard.user.dto.UserRegisteredForm;
 import kr.co.won.simpleboard.user.dto.UserResponseDto;
@@ -24,6 +26,8 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserResponseDto.Registered registeredUser(UserRegisteredForm form) {
         UserDomain newUser = UserDomain.of(form.getUserId(), form.getUserEmail(), form.getName(), form.getPassword());
+        // add user role
+        newUser.addRole(UserRoleDomain.of(newUser, UserRole.USER));
         UserDomain savedUser = userPersistence.save(newUser);
         return UserResponseDto.Registered.ofDomain(savedUser);
     }
@@ -40,5 +44,14 @@ public class UserServiceImpl implements UserService {
             UserResponseDto.Verified.verified(findUser, false);
         }
         return UserResponseDto.Verified.verified(findUser, true);
+    }
+
+    @Override
+    public UserResponseDto.Profile userProfileByUserEmail(String userEmail) {
+        UserDomain findUser = userPersistence.findByEmail(userEmail).orElseThrow(() -> {
+            // TODO find user failed
+            throw new IllegalArgumentException();
+        });
+        return UserResponseDto.Profile.ofDomain(findUser);
     }
 }
