@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 @Entity
 @Table(name = "tbl_user")
 @EqualsAndHashCode(of = {"idx"})
-@ToString
+@ToString(exclude = {"roles"})
 @SQLDelete(sql = "UPDATE tbl_user SET deleted_flag = true where idx=?")
 @Where(clause = "deleted_flag = false")
 public class UserDomain {
@@ -107,9 +107,8 @@ public class UserDomain {
         if (token.equals(this.verifiedToken)) {
             this.verifiedTime = LocalDateTime.now();
             this.verifiedFlag = true;
-            return true;
         }
-        return false;
+        return this.verifiedFlag;
     }
 
     /**
