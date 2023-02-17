@@ -35,13 +35,12 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public UserResponseDto.Verified verifiedTokenUser(String userEmail, String token) {
-        UserDomain findUser = userPersistence.findByEmail(userEmail).orElseThrow(() -> {
-            // TODO custom user exception
-            throw new IllegalArgumentException();
-        });
-        // TODO check throw or not
+        UserDomain findUser = userPersistence.findByEmail(userEmail).orElse(null);
+        if (findUser == null) {
+            return UserResponseDto.Verified.verified(null, false);
+        }
         if (!findUser.tokenVerified(token)) {
-            UserResponseDto.Verified.verified(findUser, false);
+            return UserResponseDto.Verified.verified(findUser, false);
         }
         return UserResponseDto.Verified.verified(findUser, true);
     }

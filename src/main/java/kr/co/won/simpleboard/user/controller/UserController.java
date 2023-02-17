@@ -61,9 +61,13 @@ public class UserController {
     }
 
     @GetMapping(path = "/verified-token")
-    public String verifiedTokenPage(Model model, @RequestParam(name = "token") String token, @RequestParam(name = "email") String userEmail, RedirectAttributes flash) {
-
-        flash.addAttribute("msg", "success registered user.");
-        return "redirect:/";
+    public String verifiedTokenPage(Model model, @RequestParam(name = "token") String token, @RequestParam(name = "email") String userEmail) {
+        UserResponseDto.Verified verifiedEmail = userService.verifiedTokenUser(userEmail, token);
+        if (verifiedEmail.verifiedFlag()) {
+            model.addAttribute("message", "success registered user.");
+        } else {
+            model.addAttribute("message", "email verified failed. check your email.");
+        }
+        return "email/EmailVerifiedPage";
     }
 }
