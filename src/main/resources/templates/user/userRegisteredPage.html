@@ -35,7 +35,10 @@
                             <span class="fas fa-user"></span>
                         </div>
                     </div>
+                    <span th:errors="*{name}" class="error invalid-feedback" style="display: inline;"
+                          th:text="${#fields.hasErrors('name')}">Please accept our terms</span>
                 </div>
+                <!--./user name error-->
                 <div class="input-group mb-3">
                     <input type="text" class="form-control" th:field="*{userId}" id="userId" placeholder="user id">
                     <div class="input-group-append">
@@ -43,7 +46,10 @@
                             <span class="fas fa-user"></span>
                         </div>
                     </div>
+                    <span th:errors="*{userId}" class="error invalid-feedback" style="display: inline;"
+                          th:text="${#fields.hasErrors('userId')}">Please accept our terms</span>
                 </div>
+                <!--./userid error-->
                 <div class="input-group mb-3">
                     <input type="email" class="form-control" th:field="*{userEmail}" id="userEmail" placeholder="Email">
                     <div class="input-group-append">
@@ -51,7 +57,10 @@
                             <span class="fas fa-envelope"></span>
                         </div>
                     </div>
+                    <span th:errors="*{userEmail}" class="error invalid-feedback" style="display: inline;"
+                          th:text="${#fields.hasErrors('userEmail')}">Please accept our terms</span>
                 </div>
+                <!--./user email error-->
                 <div class="input-group mb-3">
                     <input type="password" class="form-control" th:field="*{password}" id="password"
                            placeholder="Password">
@@ -60,7 +69,10 @@
                             <span class="fas fa-lock"></span>
                         </div>
                     </div>
+                    <span th:errors="*{password}" class="error invalid-feedback" style="display: inline;"
+                          th:text="${#fields.hasErrors('password')}">Please accept our terms</span>
                 </div>
+                <!--./password error-->
                 <div class="input-group mb-3">
                     <input type="password" class="form-control" th:field="*{confirmPassword}" id="confirmPassword"
                            placeholder="Retype password">
@@ -69,6 +81,8 @@
                             <span class="fas fa-lock"></span>
                         </div>
                     </div>
+                    <span th:errors="*{confirmPassword}" class="error invalid-feedback" style="display: inline;"
+                          th:text="${#fields.hasErrors('confirmPassword')}">Please accept our terms</span>
                 </div>
                 <div class="row">
                     <div class="col-8">

@@ -32,7 +32,7 @@ public class RegisteredValidator implements Validator {
             errors.rejectValue("userId", "registered.userId", "already registered Id");
         }
         if (!form.getPassword().equals(form.getConfirmPassword())) {
-            errors.rejectValue("password", "not.match.password", "not match password");
+            errors.rejectValue("confirmPassword", "not.match.password", "not match password");
         }
     }
 }
