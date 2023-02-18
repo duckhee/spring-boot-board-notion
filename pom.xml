@@ -153,9 +153,7 @@
                             <outputDirectory>target/generated-sources/java</outputDirectory>
                             <!--<outputDirectory>target/querydsl/java</outputDirectory>-->
                             <!--<outputDirectory>src/main/generated</outputDirectory>-->
-
                             <processor>com.querydsl.apt.jpa.JPAAnnotationProcessor</processor>
-
                         </configuration>
                     </execution>
                 </executions>

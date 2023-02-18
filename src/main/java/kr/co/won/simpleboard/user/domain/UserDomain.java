@@ -135,6 +135,6 @@ public class UserDomain {
 
     public boolean hasRole(UserRole... roles) {
         Set<UserRole> searchRoles = Arrays.stream(roles).collect(Collectors.toSet());
-        return this.roles.stream().map(UserRoleDomain::getRole).anyMatch(role -> searchRoles.contains(role));
+        return this.roles.stream().map(UserRoleDomain::getRole).allMatch(role -> searchRoles.contains(role));
     }
 }
