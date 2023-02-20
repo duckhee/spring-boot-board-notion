@@ -1,5 +1,6 @@
 package kr.co.won.simpleboard.config;
 
+import kr.co.won.simpleboard.auth.AuthService;
 import kr.co.won.simpleboard.config.security.TestSecurityConfiguration;
 import org.springframework.context.annotation.Import;
 
