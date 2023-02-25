@@ -1,5 +1,7 @@
 package kr.co.won.simpleboard.user.controller;
 
+import kr.co.won.simpleboard.auth.LoginUser;
+import kr.co.won.simpleboard.user.domain.UserDomain;
 import kr.co.won.simpleboard.user.dto.UserForm;
 import kr.co.won.simpleboard.user.dto.UserRegisteredForm;
 import kr.co.won.simpleboard.user.dto.UserResponseDto;
@@ -7,6 +9,8 @@ import kr.co.won.simpleboard.user.service.UserService;
 import kr.co.won.simpleboard.user.validation.RegisteredValidator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.context.event.ApplicationReadyEvent;
+import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
@@ -27,6 +31,7 @@ public class UserController {
      * validation
      */
     private final RegisteredValidator registeredValidator;
+
 
     @InitBinder(value = "userRegisteredForm")
     public void initRegisteredValidator(WebDataBinder dataBinder) {
@@ -55,8 +60,10 @@ public class UserController {
 
     // TODO profile using get Spring SecuritySessionHolder
     @GetMapping(path = "/profile")
-    public String userProfilePage(Model model) {
-
+    public String userProfilePage(@LoginUser UserDomain loginUser, Model model) {
+        log.info("login user : {}", loginUser);
+        UserResponseDto.Profile userInfo = userService.userProfileByUserId(loginUser.getUserId());
+        model.addAttribute("userInfo", userInfo);
         return "user/userProfilePage";
     }
 

@@ -1,4 +1,14 @@
+server:
+  tomcat:
+    max-http-form-post-size: 20MB
+    max-swallow-size: 20MB
+
+
 spring:
+  mvc:
+    hiddenmethod:
+      filter:
+        enabled: true
   application:
     name: springBoard
   profiles:

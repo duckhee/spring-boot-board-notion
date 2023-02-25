@@ -31,7 +31,12 @@
                 <!--./card-header-->
                 <div class="card-body">
                     <form id="createBoarForm" th:object="${boardForm}">
-                        <div class="form-group" >
+                        <input
+                                type="hidden"
+                                th:name="${_csrf.parameterName}"
+                                th:value="${_csrf.token}"/>
+
+                        <div class="form-group">
                             <label class="col-form-label" for="title">Board Title</label>
                             <input type="text" th:field="*{title}" class="form-control">
                             <span th:errors="*{title}" class="text-danger">testing</span>
