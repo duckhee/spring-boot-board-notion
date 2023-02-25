@@ -49,7 +49,8 @@ public class PageMaker<T> {
             this.nextPage = null;
         }
 
-        for (int i = startNumber; i <= tempEndPageNumber; i++) {
+//        for (int i = startNumber; i <= tempEndPageNumber; i++) {
+        for (int i = 0; i < tempEndPageNumber; i++) {
             log.info("page add : {} count : {}", startPage, i);
             pageList.add(startPage);
             startPage = startPage.next();

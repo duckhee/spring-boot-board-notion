@@ -34,6 +34,7 @@
                         <table id="boardList" class="table table-bordered table-hover">
                             <thead>
                             <tr>
+                                <th></th>
                                 <th>board no</th>
                                 <th>title</th>
                                 <th>create time</th>
@@ -42,7 +43,8 @@
                             </thead>
                             <!--./table column-->
                             <tbody>
-                            <tr th:each="board:${pagingPage?.result}">
+                            <tr th:each="board, index:${pagingPage?.result}">
+                                <td th:text="${index.count}"></td>
                                 <td th:text="${board.boardIdx}">board idx</td>
                                 <td th:text="${board.title}">board title</td>
                                 <td th:text="${#temporals.format(board.createdAt, 'yyyy-MM-dd HH:mm:ss')}">board create
