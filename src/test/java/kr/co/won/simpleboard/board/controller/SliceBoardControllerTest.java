@@ -31,9 +31,9 @@ import java.util.stream.Collectors;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @Slf4j
@@ -75,7 +75,7 @@ class SliceBoardControllerTest {
     @DisplayName(value = "[GET] - [/boards/create] Board Create Page Test")
     @Test
     void boardCreatePageTests() throws Exception {
-        mockMvc.perform(get("/boards/create"))
+        mockMvc.perform(get("/boards/create").with(csrf()))
                 .andExpect(status().isOk())
                 .andExpect(view().name("board/boardRegisteredPage"))
                 .andExpect(model().attributeExists("boardForm"));
@@ -142,7 +142,8 @@ class SliceBoardControllerTest {
         when(boardService.updateBoard(testBoard.getIdx(), updateForm)).thenReturn(updateResponse);
         mockMvc.perform(post("/boards/{idx}/modify", testBoard.getIdx())
                         .param("title", updateForm.getTitle())
-                        .param("content", updateForm.getContent()))
+                        .param("content", updateForm.getContent())
+                        .with(csrf()))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/boards/" + testBoard.getIdx()))
                 .andExpect(flash().attributeExists("msg"));

@@ -9,7 +9,7 @@ import java.lang.annotation.*;
 @Inherited
 @Import(value = {
         TestSecurityConfiguration.class,
-        SecurityConfiguration.class
+//        SecurityConfiguration.class
 })
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
