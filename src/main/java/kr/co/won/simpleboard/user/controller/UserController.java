@@ -2,15 +2,14 @@ package kr.co.won.simpleboard.user.controller;
 
 import kr.co.won.simpleboard.auth.LoginUser;
 import kr.co.won.simpleboard.user.domain.UserDomain;
-import kr.co.won.simpleboard.user.dto.UserForm;
-import kr.co.won.simpleboard.user.dto.UserRegisteredForm;
-import kr.co.won.simpleboard.user.dto.UserResponseDto;
+import kr.co.won.simpleboard.user.dto.*;
 import kr.co.won.simpleboard.user.service.UserService;
 import kr.co.won.simpleboard.user.validation.RegisteredValidator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
@@ -65,6 +64,31 @@ public class UserController {
         UserResponseDto.Profile userInfo = userService.userProfileByUserId(loginUser.getUserId());
         model.addAttribute("userInfo", userInfo);
         return "user/userProfilePage";
+    }
+
+    @GetMapping(path = "/profile/update")
+    public String userInformationUpdatePage(@LoginUser UserDomain loginUser, Model model) {
+        UserResponseDto.Profile profile = userService.userProfileByUserId(loginUser.getUserId());
+        model.addAttribute("user", loginUser);
+        model.addAttribute("userInfo", profile);
+        model.addAttribute(new UserUpdateProfileForm());
+        return "";
+    }
+
+    @PostMapping(path = "/profile/update")
+    public String userInformationUpdateDo(@LoginUser UserDomain loginUser, @Validated UserUpdateProfileForm form, Errors errors, Model model, RedirectAttributes flash) {
+        return "";
+    }
+
+    @GetMapping(path = "/forget-password")
+    public String userForgetPasswordPage(Model model) {
+        model.addAttribute(new UserUpdatePasswordForm());
+        return "";
+    }
+
+    @PostMapping(path = "/forget-password")
+    public String userForgetPasswordDo(Model model, @Validated UserUpdatePasswordForm form, Errors errors, RedirectAttributes flash) {
+        return "";
     }
 
     @GetMapping(path = "/verified-token")
