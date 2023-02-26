@@ -1,0 +1,31 @@
+version: "2" # docker-compose version setting
+networks: # network setting
+  notionPortfolio:
+    driver: Bridge
+
+services:
+  cachDB:
+    container_name: notionCacheDB
+    restart: on-failure
+    networks:
+      - notionPortfolio
+    image: redis
+    volumes:
+      - ./db/redis/:/data
+    environment:
+      TZ: "Asia/Seoul"
+  mainDB:
+    container_name: mysqlMainDB
+    restart: on-failure
+    networks:
+      - notionPortfolio
+    image: mysql
+    volumes:
+      - ./db/mysql/data/:/var/lib/mysql # docker volume setting
+    #      - ./docker/database/mysql.conf:/etc/mysql/conf.d
+    environment:
+      MYSQL_ROOT_PASSWORD:
+      MYSQL_DATABASE: notionDB
+      MYSQL_USER: notionUser
+      MYSQL_PASSWORD: notionSimpleBoards
+      TZ: "Asia/Seoul"
