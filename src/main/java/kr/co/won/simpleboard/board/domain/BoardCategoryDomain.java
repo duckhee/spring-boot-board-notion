@@ -1,10 +1,7 @@
 package kr.co.won.simpleboard.board.domain;
 
 import jakarta.persistence.*;
-import lombok.Builder;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.ToString;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -46,6 +43,10 @@ public class BoardCategoryDomain {
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
+    @Setter
+    @Builder.Default
+    @Column(name = "category_depth", nullable = false)
+    private int depth = 0;
     @UpdateTimestamp
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
@@ -58,17 +59,20 @@ public class BoardCategoryDomain {
     @OneToMany(mappedBy = "parent", orphanRemoval = true, cascade = CascadeType.ALL)
     private List<BoardCategoryDomain> subCategory = new ArrayList<>();
 
-    private BoardCategoryDomain(String categoryCode, String name, BoardCategoryDomain parent) {
+    private BoardCategoryDomain(String categoryCode, String name, int depth, BoardCategoryDomain parent) {
         this.categoryCode = categoryCode;
         this.name = name;
+        this.depth = 0;
         if (parent != null) {
             this.parent = parent;
+            this.depth = depth;
             parent.addSubCategory(this);
         }
     }
 
     public void addSubCategory(BoardCategoryDomain boardCategoryDomain) {
         this.subCategory.add(boardCategoryDomain);
+        boardCategoryDomain.setDepth(this.depth + 1);
         boardCategoryDomain.addParentCategory(this);
     }
 
@@ -76,8 +80,8 @@ public class BoardCategoryDomain {
         this.parent = boardCategoryDomain;
     }
 
-    public static BoardCategoryDomain of(String categoryCode, String name, BoardCategoryDomain parent) {
-        BoardCategoryDomain boardCategoryDomain = new BoardCategoryDomain(categoryCode, name, parent);
+    public static BoardCategoryDomain of(String categoryCode, String name, int depth, BoardCategoryDomain parent) {
+        BoardCategoryDomain boardCategoryDomain = new BoardCategoryDomain(categoryCode, name, depth, parent);
         return boardCategoryDomain;
     }
 }
