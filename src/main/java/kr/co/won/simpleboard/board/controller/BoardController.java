@@ -1,6 +1,6 @@
 package kr.co.won.simpleboard.board.controller;
 
-import kr.co.won.simpleboard.board.dto.BoardForm;
+import kr.co.won.simpleboard.board.dto.form.BoardForm;
 import kr.co.won.simpleboard.board.dto.BoardResponseDto;
 import kr.co.won.simpleboard.board.exception.BoardErrorCode;
 import kr.co.won.simpleboard.board.exception.BoardException;

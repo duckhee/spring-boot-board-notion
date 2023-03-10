@@ -3,12 +3,10 @@ package kr.co.won.simpleboard.board.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import kr.co.won.simpleboard.board.domain.BoardDomain;
-import kr.co.won.simpleboard.board.dto.BoardForm;
+import kr.co.won.simpleboard.board.dto.form.BoardForm;
 import kr.co.won.simpleboard.board.dto.BoardResponseDto;
 import kr.co.won.simpleboard.board.factory.BoardDomainRandomFactory;
-import kr.co.won.simpleboard.board.factory.BoardRandomFactory;
 import kr.co.won.simpleboard.board.service.BoardService;
-import kr.co.won.simpleboard.config.SecurityConfiguration;
 import kr.co.won.simpleboard.config.SliceSecurityConfig;
 import kr.co.won.simpleboard.utils.PageDto;
 import org.junit.jupiter.api.DisplayName;

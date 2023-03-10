@@ -1,4 +1,4 @@
-package kr.co.won.simpleboard.board.dto;
+package kr.co.won.simpleboard.board.dto.form;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
