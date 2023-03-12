@@ -12,12 +12,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Getter
-@ToString
+@ToString(exclude = {"parent"})
 @EqualsAndHashCode(of = {"idx"})
 @Entity
 @Table(name = "tbl_board_category")
-@SQLDelete(sql = "UPDATE tbl_board_category bc SET bc.deleted=TRUE WHERE bc.idx=?")
+@SQLDelete(sql = "UPDATE tbl_board_category SET deleted=TRUE WHERE idx=?")
 @Where(clause = "deleted=false")
+@AllArgsConstructor
 public class BoardCategoryDomain {
 
     protected BoardCategoryDomain() {
@@ -36,7 +37,7 @@ public class BoardCategoryDomain {
     private String name;
 
     @Builder.Default
-    @Column(name = "delete", nullable = false)
+    @Column(name = "deleted", nullable = false)
     private boolean deleted = false;
 
     @CreationTimestamp
@@ -51,21 +52,25 @@ public class BoardCategoryDomain {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, targetEntity = BoardCategoryDomain.class)
     @JoinColumn(name = "parent_id")
     private BoardCategoryDomain parent;
 
     @Builder.Default
-    @OneToMany(mappedBy = "parent", orphanRemoval = true, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "parent", fetch = FetchType.LAZY, orphanRemoval = true, cascade = CascadeType.ALL, targetEntity = BoardCategoryDomain.class)
     private List<BoardCategoryDomain> subCategory = new ArrayList<>();
+
+    @Builder
+    private BoardCategoryDomain(String categoryCode, String name) {
+        this.categoryCode = categoryCode;
+        this.name = name;
+    }
 
     private BoardCategoryDomain(String categoryCode, String name, int depth, BoardCategoryDomain parent) {
         this.categoryCode = categoryCode;
         this.name = name;
         this.depth = 0;
         if (parent != null) {
-            this.parent = parent;
-            this.depth = depth;
             parent.addSubCategory(this);
         }
     }
@@ -78,6 +83,10 @@ public class BoardCategoryDomain {
 
     public void addParentCategory(BoardCategoryDomain boardCategoryDomain) {
         this.parent = boardCategoryDomain;
+    }
+
+    public static BoardCategoryDomain of(String categoryCode, String name) {
+        return new BoardCategoryDomain(categoryCode, name);
     }
 
     public static BoardCategoryDomain of(String categoryCode, String name, int depth, BoardCategoryDomain parent) {

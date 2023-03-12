@@ -118,4 +118,26 @@ class BoardPersistenceTest {
             }
         });
     }
+
+    @Rollback(value = false)
+    @DisplayName(value = "04. board reply create Tests")
+    @Test
+    void createBoardReplyTests() {
+        dbFactory.createBoard("testing", "fdasfasd", 10, 10);
+
+    }
+
+
+
+    @DisplayName(value = "04. board reply test ")
+    @Test
+    void boardReplyTests() {
+//        dbFactory.createBoard("testing", "fdasfasd", 10, 10);
+        entityManager.flush();
+        entityManager.clear();
+        List<BoardDomain> all = boardPersistence.findAll();
+        System.out.println("all = " + all);
+        List<BoardDomain> boardDomains = boardPersistence.testingBoard();
+        System.out.println("boardDomains = " + boardDomains);
+    }
 }

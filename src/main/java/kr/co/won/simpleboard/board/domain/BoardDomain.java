@@ -1,11 +1,14 @@
 package kr.co.won.simpleboard.board.domain;
 
 import jakarta.persistence.*;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Table;
 import lombok.*;
 import org.hibernate.annotations.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @ToString
@@ -49,6 +52,9 @@ public class BoardDomain {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
+    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<ReplyDomain> replies = new ArrayList<>();
+
     @Builder
     private BoardDomain(String title, String content) {
         this.title = title;
@@ -61,5 +67,15 @@ public class BoardDomain {
                 .title(title)
                 .content(content)
                 .build();
+    }
+
+    /** Board Domain Function */
+
+    /**
+     * add reply
+     */
+    public void addReply(ReplyDomain replyDomain) {
+        replyDomain.setBoard(this);
+        this.replies.add(replyDomain);
     }
 }

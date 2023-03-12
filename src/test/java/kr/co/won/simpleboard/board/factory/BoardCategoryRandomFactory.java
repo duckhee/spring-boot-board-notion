@@ -1,15 +1,18 @@
 package kr.co.won.simpleboard.board.factory;
 
 import kr.co.won.simpleboard.board.domain.BoardCategoryDomain;
+import lombok.RequiredArgsConstructor;
 import org.jeasy.random.EasyRandom;
 import org.jeasy.random.EasyRandomParameters;
 import org.jeasy.random.randomizers.range.LongRangeRandomizer;
+import org.springframework.boot.test.context.TestComponent;
 
 import java.lang.reflect.Field;
 import java.util.function.Predicate;
 
 import static org.jeasy.random.FieldPredicates.*;
 
+@TestComponent
 public class BoardCategoryRandomFactory {
 
     public BoardCategoryDomain allBoardCategory() {

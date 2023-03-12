@@ -1,5 +1,6 @@
 package kr.co.won.simpleboard.board.persistence.impl;
 
+import com.querydsl.core.Tuple;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.JPQLQuery;
 import com.sun.security.jgss.InquireType;
@@ -7,6 +8,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.Query;
 import kr.co.won.simpleboard.board.domain.BoardDomain;
 import kr.co.won.simpleboard.board.domain.QBoardDomain;
+import kr.co.won.simpleboard.board.domain.QReplyDomain;
 import kr.co.won.simpleboard.board.dto.BoardResponseDto;
 import kr.co.won.simpleboard.board.persistence.BoardPersistenceExtension;
 import kr.co.won.simpleboard.utils.PageDto;
@@ -22,7 +24,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+import static com.querydsl.jpa.JPAExpressions.select;
 import static kr.co.won.simpleboard.board.domain.QBoardDomain.boardDomain;
+import static kr.co.won.simpleboard.board.domain.QReplyDomain.replyDomain;
 
 @Slf4j
 @Repository
@@ -68,6 +72,21 @@ public class BoardPersistenceExtensionImpl extends QuerydslRepositorySupport imp
                 .fetch();
         log.info("result total : {}, result page : {}, resultPage count size : {}", totalContentNumber, resultPage.toString(), resultPage.size());
         return new PageImpl<>(resultPage, pageable, totalContentNumber);
+    }
+
+    @Override
+    public List<BoardDomain> testingBoard() {
+        QBoardDomain board = boardDomain;
+        QReplyDomain boardReply = replyDomain;
+
+        JPQLQuery<BoardDomain> test = from(board)
+                .select(board)
+                .leftJoin(boardReply)
+                .on(boardReply.board.idx.eq(board.idx))
+                .where(board.idx.gt(0L));
+        List<BoardDomain> result = test.fetch();
+        log.info("result : {}", result);
+        return null;
     }
 
 
