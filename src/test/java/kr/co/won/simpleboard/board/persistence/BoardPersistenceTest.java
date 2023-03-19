@@ -29,7 +29,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
 
 @Slf4j
-@Rollback
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = Replace.NONE)
 @DisplayName(value = "Board DataBase Tests")
@@ -119,7 +118,6 @@ class BoardPersistenceTest {
         });
     }
 
-    @Rollback(value = false)
     @DisplayName(value = "04. board reply create Tests")
     @Test
     void createBoardReplyTests() {

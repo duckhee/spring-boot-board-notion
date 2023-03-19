@@ -22,7 +22,6 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 @Slf4j
-@Rollback
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @DisplayName(value = "Board Category DataBase Tests")
@@ -43,7 +42,6 @@ class BoardCategoryPersistenceTest {
     @Autowired
     private BoardCategoryRandomFactory factory;
 
-    @Rollback(value = false)
     @DisplayName(value = "01. create Category Tests")
     @Test
     void createCategoryTests() {
