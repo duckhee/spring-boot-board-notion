@@ -16,6 +16,7 @@ import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 import static kr.co.won.simpleboard.board.domain.QBoardCategoryDomain.boardCategoryDomain;
 
@@ -42,6 +43,19 @@ public class BoardCategoryPersistenceExtensionImpl extends QuerydslRepositorySup
                 .where(rootCategory.parent.isNull()).fetch();
         log.info("categories : {}", categories);
         return categories;
+    }
+
+    @Override
+    public Optional<BoardCategoryDomain> findCategoryWithDepth(String categoryCode) {
+        QBoardCategoryDomain category = boardCategoryDomain;
+        QBoardCategoryDomain parentCategory = new QBoardCategoryDomain("parent");
+        BoardCategoryDomain findCategory = from(category)
+                .select(category)
+                .leftJoin(parentCategory)
+                .on(category.parent.idx.eq(parentCategory.idx))
+                .where(category.categoryCode.eq(categoryCode)).fetchOne();
+        log.info("find category all : {}", findCategory);
+        return Optional.ofNullable(findCategory);
     }
 
     @Override

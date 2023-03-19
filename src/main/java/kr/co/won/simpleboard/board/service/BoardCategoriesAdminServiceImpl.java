@@ -4,6 +4,7 @@ import kr.co.won.simpleboard.board.domain.BoardCategoryDomain;
 import kr.co.won.simpleboard.board.dto.BoardCategoryResponseDto;
 import kr.co.won.simpleboard.board.dto.form.CategoryCreateForm;
 import kr.co.won.simpleboard.board.persistence.BoardCategoryPersistence;
+import kr.co.won.simpleboard.board.persistence.BoardPersistenceExtension;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,6 +18,7 @@ import java.util.List;
 public class BoardCategoriesAdminServiceImpl implements BoardCategoriesService {
 
     private final BoardCategoryPersistence categoryPersistence;
+    private final BoardPersistenceExtension boardPersistence;
 
     @Transactional
     @Override
@@ -43,6 +45,10 @@ public class BoardCategoriesAdminServiceImpl implements BoardCategoriesService {
 
     @Override
     public BoardCategoryResponseDto.Detail detailBoardCategory(String code) {
+        BoardCategoryDomain findCategory = categoryPersistence.findByCategoryCode(code).orElseThrow(() -> {
+            // TODO find Category Exception Custom
+            throw new IllegalArgumentException("");
+        });
         return BoardCategoriesService.super.detailBoardCategory(code);
     }
 
