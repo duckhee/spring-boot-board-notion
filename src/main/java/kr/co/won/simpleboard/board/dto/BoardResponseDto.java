@@ -2,6 +2,7 @@ package kr.co.won.simpleboard.board.dto;
 
 import com.querydsl.core.annotations.QueryProjection;
 import kr.co.won.simpleboard.board.domain.BoardDomain;
+import kr.co.won.simpleboard.board.domain.ReplyDomain;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -23,6 +24,7 @@ public class BoardResponseDto {
         private String title;
         private LocalDateTime createdAt;
         private LocalDateTime updatedAt;
+
 
         private Paging(Long boardIdx, String title, LocalDateTime createdAt, LocalDateTime updatedAt) {
             this.boardIdx = boardIdx;

@@ -42,8 +42,10 @@ public class UserServiceImpl implements UserService {
         UserDomain newUser = UserDomain.of(form.getUserId(), form.getUserEmail(), form.getName(), passwordEncoder.encode(form.getPassword()));
         newUser.addRole(UserRoleDomain.of(newUser, UserRole.ADMIN));
         newUser.addRole(UserRoleDomain.of(newUser, UserRole.USER));
-        UserDomain savedUser = userPersistence.save(newUser);
-        log.info("create admin user : {}", savedUser);
+        if(!userPersistence.existsByEmail(form.getUserEmail())){
+            UserDomain savedUser = userPersistence.save(newUser);
+            log.info("create admin user : {}", savedUser);
+        }
     }
 
     @Transactional

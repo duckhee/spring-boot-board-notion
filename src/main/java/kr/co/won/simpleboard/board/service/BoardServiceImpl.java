@@ -1,7 +1,7 @@
 package kr.co.won.simpleboard.board.service;
 
 import kr.co.won.simpleboard.board.domain.BoardDomain;
-import kr.co.won.simpleboard.board.dto.BoardForm;
+import kr.co.won.simpleboard.board.dto.form.BoardForm;
 import kr.co.won.simpleboard.board.dto.BoardResponseDto;
 import kr.co.won.simpleboard.board.exception.BoardErrorCode;
 import kr.co.won.simpleboard.board.exception.BoardException;
